@@ -1,3 +1,5 @@
+// old deflaut file from android studio
+
 //package com.example.eventgen
 //
 //import android.graphics.Bitmap

@@ -25,6 +25,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -47,19 +49,9 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.runtime.CompositionLocalProvider
-// Color constants
-private val PrimaryYellow = Color(0xFFE9DE20)
-private val PrimaryGreen = Color(0xFF4CD964)
-private val TextColor = Color(0xFF030303)
-private val ShadowColor = Color.Black
-private val ButtonBackground = Color.White
+import com.example.eventgen.ui.theme.AppColors
 
-// Text style constants
-private val MonoTextStyle = TextStyle(
-    fontFamily = FontFamily.Monospace,
-    fontSize = 14.sp,
-    color = TextColor
-)
+
 
 @Composable
 fun MainScreen(onDebugClick: () -> Unit) {
@@ -85,11 +77,13 @@ fun MainScreen(onDebugClick: () -> Unit) {
 @Composable
 fun HomeScreen(onSettingsClick: () -> Unit, onDebugClick: () -> Unit) {
     val context = LocalContext.current
+    // Add state to track theme changes for recomposition
+    var isDarkTheme by remember { mutableStateOf(AppColors.isDark()) }
     
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(ButtonBackground)
+            .background(AppColors.ContentBackground)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -101,7 +95,7 @@ fun HomeScreen(onSettingsClick: () -> Unit, onDebugClick: () -> Unit) {
             style = MaterialTheme.typography.headlineLarge.copy(
                 fontFamily = FontFamily.Monospace,
                 fontSize = 24.sp,
-                color = TextColor
+                color = AppColors.TextColor
             )
         )
         
@@ -115,19 +109,19 @@ fun HomeScreen(onSettingsClick: () -> Unit, onDebugClick: () -> Unit) {
         ) {
             Text(
                 "Select a portion of text about the event",
-                style = MonoTextStyle
+                style = AppColors.MonoTextStyle
             )
             Text(
                 "Tap on 'Create event 📅'",
-                style = MonoTextStyle
+                style = AppColors.MonoTextStyle
             )
             Text(
                 "Wait for AI to process (internet required)",
-                style = MonoTextStyle
+                style = AppColors.MonoTextStyle
             )
             Text(
                 "Save the event to your calendar app",
-                style = MonoTextStyle
+                style = AppColors.MonoTextStyle
             )
         }
         
@@ -152,12 +146,34 @@ fun HomeScreen(onSettingsClick: () -> Unit, onDebugClick: () -> Unit) {
             Icon(
                 imageVector = Icons.Default.Code,
                 contentDescription = "GitHub Repository",
-                tint = TextColor
+                tint = AppColors.TextColor
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 "VIEW ON GITHUB",
-                style = MonoTextStyle
+                style = AppColors.MonoTextStyle
+            )
+        }
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        // Theme toggle with moon/sun icon
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.clickable { 
+                AppColors.toggleTheme()
+                isDarkTheme = AppColors.isDark() // Update state to trigger recomposition
+            }
+        ) {
+            Icon(
+                imageVector = if (isDarkTheme) Icons.Default.LightMode else Icons.Default.DarkMode,
+                contentDescription = "Toggle Theme",
+                tint = AppColors.TextColor
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                if (isDarkTheme) "LIGHT MODE" else "DARK MODE",
+                style = AppColors.MonoTextStyle
             )
         }
     }
@@ -186,7 +202,7 @@ fun SettingsScreen(onBackClick: () -> Unit, onDebugClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(ButtonBackground)
+            .background(AppColors.ButtonBackground)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -198,7 +214,7 @@ fun SettingsScreen(onBackClick: () -> Unit, onDebugClick: () -> Unit) {
             style = MaterialTheme.typography.headlineLarge.copy(
                 fontFamily = FontFamily.Monospace,
                 fontSize = 24.sp,
-                color = TextColor  // Changed from Color(0xFF030303)
+                color = AppColors.TextColor  // Changed from Color(0xFF030303)
             )
         )
         
@@ -219,13 +235,13 @@ fun SettingsScreen(onBackClick: () -> Unit, onDebugClick: () -> Unit) {
                         saveApiChoice(context, "our")
                     },
                     colors = RadioButtonDefaults.colors(
-                        selectedColor = PrimaryYellow,  // Changed from Color(0xFFE9DE20)
-                        unselectedColor = TextColor     // Changed from Color(0xFF030303)
+                        selectedColor = AppColors.PrimaryYellow,  // Changed from Color(0xFFE9DE20)
+                        unselectedColor = AppColors.TextColor     // Changed from Color(0xFF030303)
                     )
                 )
                 Text(
                     text = "Use our Gemini API key",
-                    style = MonoTextStyle  // Changed from inline TextStyle
+                    style = AppColors.MonoTextStyle  // Changed from inline TextStyle
                 )
             }
             
@@ -241,13 +257,13 @@ fun SettingsScreen(onBackClick: () -> Unit, onDebugClick: () -> Unit) {
             saveApiChoice(context, "personal")
             },
             colors = RadioButtonDefaults.colors(
-            selectedColor = PrimaryYellow,  // Changed from Color(0xFFE9DE20)
-            unselectedColor = TextColor     // Changed from Color(0xFF030303)
+            selectedColor = AppColors.PrimaryYellow,  // Changed from Color(0xFFE9DE20)
+            unselectedColor = AppColors.TextColor     // Changed from Color(0xFF030303)
             )
             )
             Text(
             text = "Use personal Gemini API key",
-            style = MonoTextStyle,  // Changed from inline TextStyle
+            style = AppColors.MonoTextStyle,  // Changed from inline TextStyle
             )
             }
             
@@ -256,8 +272,8 @@ fun SettingsScreen(onBackClick: () -> Unit, onDebugClick: () -> Unit) {
                 
                 // Define custom text selection colors
                 val customTextSelectionColors = TextSelectionColors(
-                    handleColor = TextColor,
-                    backgroundColor = PrimaryYellow.copy(alpha = 0.3f)
+                    handleColor = AppColors.TextColor,
+                    backgroundColor = AppColors.PrimaryYellow.copy(alpha = 0.3f)
                 )
                 
                 // Wrap the TextField with CompositionLocalProvider
@@ -274,24 +290,24 @@ fun SettingsScreen(onBackClick: () -> Unit, onDebugClick: () -> Unit) {
                         label = { 
                             Text(
                                 "Enter your API key",
-                                style = MonoTextStyle
+                                style = AppColors.MonoTextStyle
                             ) 
                         },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
-                        textStyle = MonoTextStyle,
+                        textStyle = AppColors.MonoTextStyle,
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = when {
-                                personalApiKey.isEmpty() -> TextColor
-                                apiKeyStatus is ApiKeyStatus.Valid -> TextColor
+                                personalApiKey.isEmpty() -> AppColors.TextColor
+                                apiKeyStatus is ApiKeyStatus.Valid -> AppColors.TextColor
                                 else -> Color.Red
                             },
                             unfocusedBorderColor = when {
-                                personalApiKey.isEmpty() -> TextColor
-                                apiKeyStatus is ApiKeyStatus.Valid -> TextColor
+                                personalApiKey.isEmpty() -> AppColors.TextColor
+                                apiKeyStatus is ApiKeyStatus.Valid -> AppColors.TextColor
                                 else -> Color.Red
                             },
-                            cursorColor = TextColor
+                            cursorColor = AppColors.TextColor
                         )
                     )
                 }
@@ -327,9 +343,9 @@ fun SettingsScreen(onBackClick: () -> Unit, onDebugClick: () -> Unit) {
                                 )
                                 .background(
                                     if (apiKeyStatus is ApiKeyStatus.Valid) 
-                                        PrimaryGreen     // Changed from Color(0xFF4CD964)
+                                        AppColors.PrimaryGreen     // Changed from Color(0xFF4CD964)
                                     else 
-                                        PrimaryYellow    // Changed from Color(0xFFE9DE20)
+                                        AppColors.PrimaryYellow    // Changed from Color(0xFFE9DE20)
                                 )
                                 .clickable(
                                     enabled = personalApiKey.length == 39 && apiKeyStatus !is ApiKeyStatus.Validating
@@ -360,7 +376,7 @@ fun SettingsScreen(onBackClick: () -> Unit, onDebugClick: () -> Unit) {
                                 style = TextStyle(
                                     fontFamily = FontFamily.Monospace,
                                     fontSize = 14.sp,
-                                    color = TextColor,  // Changed from Color(0xFF030303)
+                                    color = AppColors.TextColor,  // Changed from Color(0xFF030303)
                                     fontWeight = FontWeight.Bold
                                 ),
                                 modifier = Modifier.align(Alignment.Center)
@@ -391,7 +407,7 @@ fun SettingsScreen(onBackClick: () -> Unit, onDebugClick: () -> Unit) {
                                     color = Color.Black,
                                     shape = RectangleShape
                                 )
-                                .background(Color.White)  // Always white background
+                                .background(AppColors.ContentBackground)  // Always white background
                                 .clickable { 
                                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://aistudio.google.com/apikey"))
                                     context.startActivity(intent)
@@ -402,7 +418,7 @@ fun SettingsScreen(onBackClick: () -> Unit, onDebugClick: () -> Unit) {
                                 style = TextStyle(
                                     fontFamily = FontFamily.Monospace,
                                     fontSize = 14.sp,
-                                    color = TextColor,  // Changed from Color(0xFF030303)
+                                    color = AppColors.TextColor,  // Changed from Color(0xFF030303)
                                     fontWeight = FontWeight.Bold
                                 ),
                                 modifier = Modifier.align(Alignment.Center)
@@ -442,17 +458,17 @@ fun SettingsScreen(onBackClick: () -> Unit, onDebugClick: () -> Unit) {
                     saveIcsSavePreference(context, checked)
                 },
                 colors = CheckboxDefaults.colors(
-                    checkedColor = TextColor,
-                    uncheckedColor = TextColor,
-                    checkmarkColor = ButtonBackground,
-                    disabledCheckedColor = PrimaryYellow.copy(alpha = 0.5f),
-                    disabledUncheckedColor = TextColor.copy(alpha = 0.5f),
-                    disabledIndeterminateColor = PrimaryYellow.copy(alpha = 0.5f)
+                    checkedColor = AppColors.TextColor,
+                    uncheckedColor = AppColors.TextColor,
+                    checkmarkColor = AppColors.ButtonBackground,
+                    disabledCheckedColor = AppColors.PrimaryYellow.copy(alpha = 0.5f),
+                    disabledUncheckedColor = AppColors.TextColor.copy(alpha = 0.5f),
+                    disabledIndeterminateColor = AppColors.PrimaryYellow.copy(alpha = 0.5f)
                 )
             )
             Text(
                 text = "Save .ics files to downloads",
-                style = MonoTextStyle,
+                style = AppColors.MonoTextStyle,
             )
         }
         
@@ -469,7 +485,7 @@ fun SettingsScreen(onBackClick: () -> Unit, onDebugClick: () -> Unit) {
                 modifier = Modifier
                     .fillMaxSize()
                     .offset(x = 2.dp, y = 2.dp)
-                    .background(ShadowColor)
+                    .background(AppColors.ShadowColor)
             )
             
             // Actual button with border
@@ -481,7 +497,7 @@ fun SettingsScreen(onBackClick: () -> Unit, onDebugClick: () -> Unit) {
                         color = Color.Black,
                         shape = RectangleShape
                     )
-                    .background(Color(0xFFE9DE20))
+                    .background(AppColors.PrimaryYellow)
                     .clickable { onDebugClick() }
             ) {
                 Text(
@@ -489,7 +505,7 @@ fun SettingsScreen(onBackClick: () -> Unit, onDebugClick: () -> Unit) {
                     style = TextStyle(
                         fontFamily = FontFamily.Monospace,
                         fontSize = 14.sp,
-                        color = TextColor,  // Changed from Color(0xFF030303)
+                        color = AppColors.TextColor,  // Changed from Color(0xFF030303)
                         fontWeight = FontWeight.Bold
                     ),
                     modifier = Modifier.align(Alignment.Center)
@@ -522,7 +538,7 @@ fun SettingsScreen(onBackClick: () -> Unit, onDebugClick: () -> Unit) {
                         color = Color.Black,
                         shape = RectangleShape
                     )
-                    .background(Color.White)
+                    .background(AppColors.ContentBackground)
                     .clickable { onBackClick() }
             ) {
                 Text(
@@ -530,7 +546,7 @@ fun SettingsScreen(onBackClick: () -> Unit, onDebugClick: () -> Unit) {
                     style = TextStyle(
                         fontFamily = FontFamily.Monospace,
                         fontSize = 14.sp,
-                        color = TextColor,  // Changed from Color(0xFF030303)
+                        color = AppColors.TextColor,  // Changed from Color(0xFF030303)
                         fontWeight = FontWeight.Bold
                     ),
                     modifier = Modifier.align(Alignment.Center)
@@ -557,13 +573,13 @@ private fun ApiChoiceRadioButton(
             selected = selected,
             onClick = onClick,
             colors = RadioButtonDefaults.colors(
-                selectedColor = PrimaryYellow,
-                unselectedColor = TextColor
+                selectedColor = AppColors.PrimaryYellow,
+                unselectedColor = AppColors.TextColor
             )
         )
         Text(
             text = text,
-            style = MonoTextStyle,
+            style = AppColors.MonoTextStyle,
             modifier = Modifier.padding(start = 8.dp)
         )
     }
@@ -575,7 +591,7 @@ private fun StyledButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = PrimaryYellow
+    backgroundColor: Color = AppColors.PrimaryYellow
 ) {
     Box(
         modifier = modifier
@@ -587,7 +603,7 @@ private fun StyledButton(
             modifier = Modifier
                 .fillMaxSize()
                 .offset(x = 2.dp, y = 2.dp)
-                .background(ShadowColor)
+                .background(AppColors.ShadowColor)
         )
         
         // Actual button with border
@@ -596,7 +612,7 @@ private fun StyledButton(
                 .fillMaxSize()
                 .border(
                     width = 1.dp,
-                    color = ShadowColor,
+                    color = AppColors.ShadowColor,
                     shape = RectangleShape
                 )
                 .background(backgroundColor)
@@ -607,7 +623,7 @@ private fun StyledButton(
                 style = TextStyle(
                     fontFamily = FontFamily.Monospace,
                     fontSize = 14.sp,
-                    color = TextColor,
+                    color = AppColors.TextColor,
                     fontWeight = FontWeight.Bold
                 ),
                 modifier = Modifier.align(Alignment.Center)

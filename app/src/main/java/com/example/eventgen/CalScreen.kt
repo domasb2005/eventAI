@@ -34,22 +34,21 @@ import androidx.compose.foundation.clickable
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.offset
 import androidx.compose.ui.zIndex
+import com.example.eventgen.ui.theme.AppColors
 
+// Remove these color constants as they're now in AppColors
+// private val PrimaryYellow = Color(0xFFE9DE20)
+// private val PrimaryGreen = Color(0xFF4CD964)
+// private val TextColor = Color(0xFF030303)
+// private val ShadowColor = Color.Black
+// private val ButtonBackground = AppColors.ContentBackground
 
-
-// Add these color constants to match those in MainScreen.kt
-private val PrimaryYellow = Color(0xFFE9DE20)
-private val PrimaryGreen = Color(0xFF4CD964)
-private val TextColor = Color(0xFF030303)
-private val ShadowColor = Color.Black
-private val ButtonBackground = Color.White
-
-// Add this text style constant to match MainScreen.kt
-private val MonoTextStyle = TextStyle(
-    fontFamily = FontFamily.Monospace,
-    fontSize = 14.sp,
-    color = TextColor
-)
+// Remove this text style constant as it's now in AppColors
+// private val MonoTextStyle = TextStyle(
+//     fontFamily = FontFamily.Monospace,
+//     fontSize = 14.sp,
+//     color = TextColor
+// )
 
 private var selectedText by mutableStateOf("")
 private var calViewModel = CalViewModel()
@@ -69,7 +68,7 @@ fun CalScreen(viewModel: CalViewModel = calViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(PrimaryYellow)
+            .background(AppColors.DebugBackground)
             .padding(16.dp)
             .verticalScroll(scrollState)
     ) {
@@ -80,7 +79,7 @@ fun CalScreen(viewModel: CalViewModel = calViewModel) {
             style = MaterialTheme.typography.titleMedium.copy(
                 fontFamily = FontFamily.Monospace,
                 fontWeight = FontWeight.Bold,
-                color = TextColor
+                color = AppColors.TextColor
             ),
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -89,28 +88,28 @@ fun CalScreen(viewModel: CalViewModel = calViewModel) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(IntrinsicSize.Min) // This is key - it makes the Box take the height of its content
-                .padding(bottom = 2.dp, end = 2.dp) // Add padding for shadow
+                .height(IntrinsicSize.Min)
+                .padding(bottom = 2.dp, end = 2.dp)
         ) {
             // Shadow box - drawn first
             Box(
                 modifier = Modifier
-                    .fillMaxSize() // Now this will match the parent Box which has IntrinsicSize.Min
+                    .fillMaxSize()
                     .offset(x = 2.dp, y = 2.dp)
-                    .background(ShadowColor)
+                    .background(AppColors.ShadowColor)
             )
             
             // Content box - drawn second (on top)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White)
-                    .border(1.dp, TextColor, RectangleShape)
+                    .background(AppColors.ContentBackground)
+                    .border(1.dp, Color.Black, RectangleShape)
                     .padding(16.dp)
             ) {
                 Text(
                     text = selectedText,
-                    style = MonoTextStyle
+                    style = AppColors.MonoTextStyle
                 )
             }
         }
@@ -123,7 +122,7 @@ fun CalScreen(viewModel: CalViewModel = calViewModel) {
             style = MaterialTheme.typography.titleMedium.copy(
                 fontFamily = FontFamily.Monospace,
                 fontWeight = FontWeight.Bold,
-                color = TextColor
+                color = AppColors.TextColor
             ),
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -142,20 +141,20 @@ fun CalScreen(viewModel: CalViewModel = calViewModel) {
                         modifier = Modifier
                             .fillMaxSize()
                             .offset(x = 2.dp, y = 2.dp)
-                            .background(ShadowColor)
+                            .background(AppColors.ShadowColor)
                     )
                     
                     // Actual content box with border
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(Color.White)
-                            .border(1.dp, TextColor, RectangleShape)
+                            .background(AppColors.ContentBackground)
+                            .border(1.dp, Color.Black, RectangleShape)
                             .padding(16.dp)
                     ) {
                         Text(
                             text = "No event details extracted yet",
-                            style = MonoTextStyle
+                            style = AppColors.MonoTextStyle
                         )
                     }
                 }
@@ -174,20 +173,20 @@ fun CalScreen(viewModel: CalViewModel = calViewModel) {
                         modifier = Modifier
                             .fillMaxSize()
                             .offset(x = 2.dp, y = 2.dp)
-                            .background(ShadowColor)
+                            .background(AppColors.ShadowColor)
                     )
                     
                     // Actual content box with border
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(Color.White)
-                            .border(1.dp, TextColor, RectangleShape)
+                            .background(AppColors.ContentBackground)
+                            .border(1.dp, Color.Black, RectangleShape)
                             .padding(16.dp)
                     ) {
                         Text(
                             text = "Processing...",
-                            style = MonoTextStyle
+                            style = AppColors.MonoTextStyle
                         )
                     }
                 }
@@ -209,20 +208,20 @@ fun CalScreen(viewModel: CalViewModel = calViewModel) {
                         modifier = Modifier
                             .fillMaxSize()
                             .offset(x = 2.dp, y = 2.dp)
-                            .background(ShadowColor)
+                            .background(AppColors.ShadowColor)
                     )
                     
                     // Actual content box with border
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(Color.White)
-                            .border(1.dp, TextColor, RectangleShape)
+                            .background(AppColors.ContentBackground)
+                            .border(1.dp, Color.Black, RectangleShape)
                             .padding(16.dp)
                     ) {
                         Text(
                             text = result.rawOutput,
-                            style = MonoTextStyle
+                            style = AppColors.MonoTextStyle
                         )
                     }
                 }
@@ -235,7 +234,7 @@ fun CalScreen(viewModel: CalViewModel = calViewModel) {
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontFamily = FontFamily.Monospace,
                         fontWeight = FontWeight.Bold,
-                        color = TextColor
+                        color = AppColors.TextColor
                     ),
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
@@ -252,20 +251,20 @@ fun CalScreen(viewModel: CalViewModel = calViewModel) {
                         modifier = Modifier
                             .fillMaxSize()
                             .offset(x = 2.dp, y = 2.dp)
-                            .background(ShadowColor)
+                            .background(AppColors.ShadowColor)
                     )
                     
                     // Actual content box with border
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(Color.White)
-                            .border(1.dp, TextColor, RectangleShape)
+                            .background(AppColors.ContentBackground)
+                            .border(1.dp, Color.Black, RectangleShape)
                             .padding(16.dp)
                     ) {
                         Text(
                             text = result.icsContent,
-                            style = MonoTextStyle
+                            style = AppColors.MonoTextStyle
                         )
                     }
                 }
@@ -284,20 +283,20 @@ fun CalScreen(viewModel: CalViewModel = calViewModel) {
                         modifier = Modifier
                             .fillMaxSize()
                             .offset(x = 2.dp, y = 2.dp)
-                            .background(ShadowColor)
+                            .background(AppColors.ShadowColor)
                     )
                     
                     // Actual content box with border
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(Color.White)
-                            .border(1.dp, TextColor, RectangleShape)
+                            .background(AppColors.ContentBackground)
+                            .border(1.dp, Color.Black, RectangleShape)
                             .padding(16.dp)
                     ) {
                         Text(
                             text = "Error: ${(uiState as UiState.Error).errorMessage}",
-                            style = MonoTextStyle.copy(color = MaterialTheme.colorScheme.error)
+                            style = AppColors.MonoTextStyle.copy(color = MaterialTheme.colorScheme.error)
                         )
                     }
                 }
@@ -318,52 +317,7 @@ fun CalScreenPreview() {
     CalScreen()
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-private fun StyledButton(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    backgroundColor: Color = PrimaryYellow
-) {
-    Box(
-        modifier = modifier
-            .width(158.dp)
-            .height(38.dp)
-    ) {
-        // Shadow box behind the button
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .offset(x = 2.dp, y = 2.dp)
-                .background(ShadowColor)
-        )
-        
-        // Actual button with border
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .border(
-                    width = 1.dp,
-                    color = ShadowColor,
-                    shape = RectangleShape
-                )
-                .background(backgroundColor)
-                .clickable { onClick() }
-        ) {
-            Text(
-                text,
-                style = TextStyle(
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 14.sp,
-                    color = TextColor,
-                    fontWeight = FontWeight.Bold
-                ),
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
-    }
-}
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -379,7 +333,7 @@ fun DebugScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(PrimaryYellow)
+            .background(AppColors.PrimaryYellow)
             .padding(16.dp)
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -389,7 +343,7 @@ fun DebugScreen(
             style = MaterialTheme.typography.titleMedium.copy(
                 fontFamily = FontFamily.Monospace,
                 fontWeight = FontWeight.Bold,
-                color = TextColor
+                color = AppColors.TextColor
             )
         )
         
@@ -405,20 +359,20 @@ fun DebugScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .offset(x = 2.dp, y = 2.dp)
-                    .background(ShadowColor)
+                    .background(AppColors.ShadowColor)
             )
             
             // Content box - drawn second (on top)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White)
-                    .border(1.dp, TextColor, RectangleShape)
+                    .background(AppColors.ContentBackground)
+                    .border(1.dp, Color.Black, RectangleShape)
                     .padding(16.dp)
             ) {
                 Text(
                     text = selectedText,
-                    style = MonoTextStyle
+                    style = AppColors.MonoTextStyle
                 )
             }
         }
@@ -429,7 +383,7 @@ fun DebugScreen(
             style = MaterialTheme.typography.titleMedium.copy(
                 fontFamily = FontFamily.Monospace,
                 fontWeight = FontWeight.Bold,
-                color = TextColor
+                color = AppColors.TextColor
             ),
             modifier = Modifier.padding(top = 16.dp)
         )
@@ -447,20 +401,20 @@ fun DebugScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .offset(x = 2.dp, y = 2.dp)
-                    .background(ShadowColor)
+                    .background(AppColors.ShadowColor)
             )
             
             // Content box - drawn second (on top)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White)
-                    .border(1.dp, TextColor, RectangleShape)
+                    .background(AppColors.ContentBackground)
+                    .border(1.dp, Color.Black, RectangleShape)
                     .padding(16.dp)
             ) {
                 Text(
                     text = eventJson,
-                    style = MonoTextStyle
+                    style = AppColors.MonoTextStyle
                 )
             }
         }
@@ -471,7 +425,7 @@ fun DebugScreen(
             style = MaterialTheme.typography.titleMedium.copy(
                 fontFamily = FontFamily.Monospace,
                 fontWeight = FontWeight.Bold,
-                color = TextColor
+                color = AppColors.TextColor
             ),
             modifier = Modifier.padding(top = 16.dp)
         )
@@ -489,31 +443,25 @@ fun DebugScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .offset(x = 2.dp, y = 2.dp)
-                    .background(ShadowColor)
+                    .background(AppColors.ShadowColor)
             )
             
             // Content box - drawn second (on top)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White)
-                    .border(1.dp, TextColor, RectangleShape)
+                    .background(AppColors.ContentBackground)
+                    .border(1.dp, Color.Black, RectangleShape)
                     .padding(16.dp)
             ) {
                 Text(
                     text = icsContent,
-                    style = MonoTextStyle
+                    style = AppColors.MonoTextStyle
                 )
             }
         }
         
         Spacer(modifier = Modifier.height(24.dp))
         
-        // Back button
-        StyledButton(
-            text = "BACK",
-            onClick = onBackClick,
-            backgroundColor = ButtonBackground
-        )
     }
 }
