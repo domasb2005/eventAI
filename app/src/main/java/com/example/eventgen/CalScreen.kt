@@ -1,5 +1,6 @@
 package com.example.eventgen
 
+import android.util.Log
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
@@ -306,9 +307,19 @@ fun CalScreen(viewModel: CalViewModel = calViewModel) {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun updateSelectedText(text: String) {
+// Update the function signature to accept a ViewModel parameter
+fun updateSelectedText(text: String, viewModel: CalViewModel? = null) {
+    Log.d("CalScreen", "updateSelectedText called with text: ${text.take(30)}...")
     selectedText = text
-    calViewModel.extractEventDetails(text)
+    
+    // Use the provided viewModel if available
+    if (viewModel != null) {
+        Log.d("CalScreen", "Using provided ViewModel instance: ${viewModel.hashCode()}")
+        viewModel.extractEventDetails(text)
+    } else {
+        Log.d("CalScreen", "Using default calViewModel instance: ${calViewModel.hashCode()}")
+        calViewModel.extractEventDetails(text)
+    }
 }
 
 @Preview(showSystemUi = true)

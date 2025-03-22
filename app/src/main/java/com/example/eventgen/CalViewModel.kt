@@ -52,6 +52,7 @@ class CalViewModel : ViewModel() {
     private var _context: Context? = null
     
     fun setContext(context: Context) {
+        Log.d("CalViewModel", "Setting context: $context")
         _context = context
     }
 
@@ -167,7 +168,10 @@ class CalViewModel : ViewModel() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun extractEventDetails(text: String, retryCount: Int = 0) {
+        Log.d("CalViewModel", "extractEventDetails called with text: ${text.take(50)}...")
+        
         if (_context == null) {
+            Log.e("CalViewModel", "Context is null. Stack trace: ", Exception())
             _uiState.value = UiState.Error("Internal error: Context not initialized")
             return
         }
