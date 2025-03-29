@@ -1,5 +1,5 @@
 # EventAI
-
+https://github.com/user-attachments/assets/5ca97152-149f-4ddc-9d95-1eef43b6092c
 1. Select text containing event information in any app
 2. Choose "EventAI" from the text selection menu
 3. The app will process the text and extract event details
